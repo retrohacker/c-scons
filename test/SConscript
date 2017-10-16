@@ -14,5 +14,5 @@ for f in Glob("*.c"):
 
 for f in Glob("src/*.c"):
     name = f.name.split(".")[0]
-    env.Gcov(name + ".gcov", f)
-    env.Depends(name + ".gcov", name + ".log")
+    env.Gcov("../" + name + ".c.gcov", f)
+    env.Depends("../" + name + ".c.gcov", name + ".log")
