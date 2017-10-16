@@ -1,8 +1,4 @@
-AddOption("--test",
-          type="choice",
-          default="no",
-          choices=["yes", "no"])
-if GetOption("test") == "yes":
+if "test" in COMMAND_LINE_TARGETS:
     SConscript("test/SConscript")
 else:
     Program("hello", [ "index.c", Glob("src/*.c") ])

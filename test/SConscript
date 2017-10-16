@@ -1,7 +1,6 @@
 # Run each test as it builds, writing output to both stdout and a log file
 run = Builder(action = "$SOURCE | tee $TARGET")
-gcov = Builder(action = "gcov $SOURCE")
-env = Environment(BUILDERS = { "Run" : run, "Gcov": gcov })
+env = Environment(BUILDERS = { "Run" : run })
 env.Append(CFLAGS = ["-fprofile-arcs", "-ftest-coverage"])
 env.Append(LIBS = ["gcov"])
 
@@ -11,8 +10,3 @@ for f in Glob("*.c"):
     env.Program(name + ".bin", [ f, "lib/test.c", Glob("../src/*.c") ])
     env.Clean(name + ".bin", [ name + ".gcno", name + ".gcda", "lib/test.gcno", "lib/test.gcda", Glob("../src/*.gcno"), Glob("../src/*.gcda") ])
     env.Run(name + ".log", [ name + ".bin", "lib/test.c" ])
-
-for f in Glob("src/*.c"):
-    name = f.name.split(".")[0]
-    env.Gcov("../" + name + ".c.gcov", f)
-    env.Depends("../" + name + ".c.gcov", name + ".log")
