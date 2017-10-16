@@ -1,2 +1,8 @@
 *.swp
 *.dblite
+*.gcov
+*.gcda
+*.gcno
+*.log
+*.bin
+*.o

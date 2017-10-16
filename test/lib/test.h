@@ -7,5 +7,6 @@ typedef struct {
 } test;
 test* new_test(char *name);
 int equal(test *t, char *type, char *msg, ...);
+int ok(test *t, char*type, char *msg, ...);
 int done(test *t);
 #endif

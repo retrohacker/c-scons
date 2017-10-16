@@ -31,6 +31,30 @@ int equal(test *t, char* type, char *msg, ...) {
   return pass;
 }
 
+int ok(test *t, char*type, char *msg, ...) {
+  va_list args;
+  va_start(args, msg);
+  int pass;
+  if(strcmp(type, "%d") == 0) {
+    pass = va_arg(args, int);
+  } else {
+    printf("Unsupported type %s for \"%s\"\n", type, msg);
+    return 0;
+  }
+  va_end(args);
+  if(pass) {
+    printf("  [ OK ] - ");
+  } else {
+    printf("  [FAIL] - ");
+    (*t).state = FAIL;
+  }
+  va_start(args, msg);
+  vprintf(msg, args);
+  va_end(args);
+  printf("\n");
+  return pass;
+}
+
 // Get the process exit status based on this test's status
 int done(test *t) {
   test_state state = (*t).state;

@@ -25,7 +25,7 @@ void logger(log_level level, char *s, ...) {
     return;
   }
   if(OUTPUT == NULL) {
-    set_log_output(stdout);
+    return;
   }
   va_list args;
   va_start(args, s);

@@ -6,9 +6,10 @@
 
 int t1();
 int t2();
+int t3();
 
 int main() {
-  return t1() | t2();
+  return t1() | t2() | t3();
 }
 
 int t1() {
@@ -55,5 +56,13 @@ int t2() {
   fclose(output); // Should have logged 6 times
   remove("./output.tmp");
   equal(t, "%zd", "Expected to log %zd time and saw %zd", 6, strlen(c));
+  return done(t);
+}
+
+int t3() {
+  test *t = new_test("Logger: Should be safe to call without output stream");
+  set_log_output(NULL);
+  logger(ERROR, "a");
+  ok(t, "%d", "Compiled", 1);
   return done(t);
 }
