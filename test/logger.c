@@ -17,15 +17,15 @@ int t1() {
   FILE *output = fopen("./output.tmp", "w");
   set_log_output(output);
   logger(DEBUG, "a");
-  logger(WARN, "a");
-  logger(ERROR, "a");
+  logger(WARN, "b");
+  logger(ERROR, "c");
   fclose(output);
   output = fopen("./output.tmp", "r");
   char c[5];
   fgets(c, 5, output);
   fclose(output);
   remove("./output.tmp");
-  equal(t, "%zd", "Expected to log %zd time and saw %zd", 1, strlen(c));
+  equal(t, "%s", "Expected to log %s and saw %s", "c", c);
   return done(t);
 }
 
@@ -35,27 +35,27 @@ int t2() {
   set_log_output(output);
   set_log_level(ERROR);
   logger(DEBUG, "a");
-  logger(WARN, "a");
-  logger(ERROR, "a"); // Should output 1
+  logger(WARN, "b");
+  logger(ERROR, "c");
   set_log_level(WARN);
-  logger(DEBUG, "a");
-  logger(WARN, "a");
-  logger(ERROR, "a"); // Should output 2
+  logger(DEBUG, "d");
+  logger(WARN, "e");
+  logger(ERROR, "f");
   set_log_level(DEBUG);
-  logger(DEBUG, "a");
-  logger(WARN, "a");
-  logger(ERROR, "a"); // Should output 3
+  logger(DEBUG, "g");
+  logger(WARN, "h");
+  logger(ERROR, "i");
   set_log_level(OFF);
-  logger(DEBUG, "a");
-  logger(WARN, "a");
-  logger(ERROR, "a"); // Should output 0
-  fclose(output); // Should have logged 6 times
+  logger(DEBUG, "j");
+  logger(WARN, "k");
+  logger(ERROR, "l");
+  fclose(output);
   output = fopen("./output.tmp", "r");
   char c[7];
   fgets(c, 7, output);
-  fclose(output); // Should have logged 6 times
+  fclose(output);
   remove("./output.tmp");
-  equal(t, "%zd", "Expected to log %zd time and saw %zd", 6, strlen(c));
+  equal(t, "%s", "Expected to log %s and saw %s", "cefghi", c);
   return done(t);
 }
 

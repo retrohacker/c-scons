@@ -13,6 +13,8 @@ int equal(test *t, char* type, char *msg, ...) {
     pass = va_arg(args, int) == va_arg(args, int);
   } else if(strcmp(type, "%zd") == 0) {
     pass = va_arg(args, int) == va_arg(args, size_t);
+  } else if(strcmp(type, "%s") == 0) {
+    pass = strcmp(va_arg(args, char *), va_arg(args, char *)) == 0;
   } else {
     printf("Unsupported type %s for \"%s\"\n", type, msg);
     return 0;
