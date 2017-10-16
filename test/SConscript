@@ -9,7 +9,7 @@ env.Append(LIBS = ["gcov"])
 for f in Glob("*.c"):
     name = f.name.split(".")[0]
     env.Program(name + ".bin", [ f, "lib/test.c", Glob("../src/*.c") ])
-    env.Clean(name + ".bin", [ name + "gcno", name + ".gcda", "lib/test.gcno", "lib/test.gcda", Glob("../src/*.gcno"), Glob("../src/*.gcda") ])
+    env.Clean(name + ".bin", [ name + ".gcno", name + ".gcda", "lib/test.gcno", "lib/test.gcda", Glob("../src/*.gcno"), Glob("../src/*.gcda") ])
     env.Run(name + ".log", [ name + ".bin", "lib/test.c" ])
 
 for f in Glob("src/*.c"):
