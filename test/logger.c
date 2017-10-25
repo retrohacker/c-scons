@@ -4,15 +4,15 @@
 #include <stdio.h>
 #include <string.h>
 
-int t1();
-int t2();
-int t3();
+int logger_t1();
+int logger_t2();
+int logger_t3();
 
-int main() {
-  return t1() | t2() | t3();
+int logger_test() {
+  return logger_t1() | logger_t2() | logger_t3();
 }
 
-int t1() {
+int logger_t1() {
   test *t = new_test("Logger: Should default to ERROR");
   FILE *output = fopen("./output.tmp", "w");
   set_log_output(output);
@@ -29,7 +29,7 @@ int t1() {
   return done(t);
 }
 
-int t2() {
+int logger_t2() {
   test *t = new_test("Logger: Should handle changing log levels");
   FILE *output = fopen("./output.tmp", "w");
   set_log_output(output);
@@ -59,7 +59,7 @@ int t2() {
   return done(t);
 }
 
-int t3() {
+int logger_t3() {
   test *t = new_test("Logger: Should be safe to call without output stream");
   set_log_output(NULL);
   logger(ERROR, "a");

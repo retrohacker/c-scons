@@ -4,5 +4,5 @@
 *.gcda
 *.gcno
 *.log
-*.bin
 *.o
+build/

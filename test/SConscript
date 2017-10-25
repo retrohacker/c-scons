@@ -1,20 +1,27 @@
-# Run each test as it builds, writing output to both stdout and a log file
 run = Builder(action = "$SOURCE | tee $TARGET")
-gcov = Builder(action = "gcov $SOURCE")
+gcov = Builder(action = "gcov -b $SOURCE | tee $TARGET")
 env = Environment(BUILDERS = { "Run" : run, "Gcov" : gcov })
 env.Append(CFLAGS = ["-fprofile-arcs", "-ftest-coverage"])
 env.Append(LIBS = ["gcov"])
 
-# One c file per test
-for f in Glob("*.c"):
-    name = f.name.split(".")[0]
-    env.Program(name + ".bin", [ f, "lib/test.c", Glob("../src/*.c") ])
-    env.Clean(name + ".bin", [ name + ".gcno", name + ".gcda", "lib/test.gcno", "lib/test.gcda", Glob("../src/*.gcno"), Glob("../src/*.gcda") ])
-    env.Run(name + ".log", [ name + ".bin", "lib/test.c" ])
+# Define all of our sources
+files = Glob("*.c")
+files.extend(Glob("lib/*.c"))
+files.extend(Glob("src/*.c"))
+env.Program("test", files);
+env.Run("test.log", [ "test" ])
 
+# Report code coverage
 for f in Glob("src/*.c"):
-    name = f.name.split(".")[0]
-    env.Gcov(name + ".always.run", f)
-    for d in Glob("*.c"):
-        env.Depends(name + ".always.run", d.name.split(".")[0] + ".log")
-    env.Clean(name + ".always.run", "../" + name + ".c.gcov")
+    env.Gcov(f.name + ".coverage", f.name)
+    env.Depends(f.name + ".coverage", "test.log")
+
+# Cleanup gcov files
+for f in files:
+    name = str(f).split(".")[0]
+    env.Clean("test.log", [name + ".gcda", name + ".gcno"])
+
+# Cleanup coverage reports
+for f in Glob("src/*.c"):
+    env.Clean("test.log", "../" + f.name + ".gcov")
+
