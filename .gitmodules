@@ -1,0 +1,3 @@
+[submodule "deps/minibsdiff"]
+	path = deps/minibsdiff
+	url = git@github.com:retrohacker/minibsdiff

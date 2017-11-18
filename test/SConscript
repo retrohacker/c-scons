@@ -16,6 +16,7 @@ env.Append(LIBS = ["gcov"])
 files = Glob("*.c")
 files.extend(Glob("lib/*.c"))
 files.extend(Glob("src/*.c"))
+files.extend(["deps/minibsdiff/bsdiff.c","deps/minibsdiff/bspatch.c",])
 
 # Build the test binary
 env.Program("test", files);
